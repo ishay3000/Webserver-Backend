@@ -1,0 +1,28 @@
+{
+  "Sessions": [
+    {
+      "Session1": {
+        "Bandwidth": {
+          "Rate": "5.0"
+        },
+        "SyncDirectory": {
+          "Path": "/home/dor/test/LIOR"
+        },
+        "Type": "TX",
+        "Name": "Session1"
+      }
+    },
+    {
+      "Session2": {
+        "Bandwidth": {
+          "Rate": "5.0"
+        },
+        "SyncDirectory": {
+          "Path": "/home/dor/test/"
+        },
+        "Type": "RX",
+        "Name": "Session2"
+      }
+    }
+  ]
+}

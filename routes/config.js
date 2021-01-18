@@ -1,52 +1,67 @@
 const iniParser = require('../utils/ini-reader')
 const fs = require('fs')
-const path = require('path')
+const path = require('path');
+const { Console } = require('console');
 
 
-let configFiles = {}
-
-function traverseDir(dir) {
-    fs.readdirSync(dir).forEach(file => {
-      let fullPath = path.join(dir, file);
-      let parentDir = path.basename(fullPath)
-      if (fs.lstatSync(fullPath).isDirectory()) {
-          parent
-          configFiles[parentDir] = []
-          console.log(file)
-         traverseDir(fullPath);
-       } else {
-           configFiles[parentDir]
-       }  
-    });
-  }
+function log(text) {
+  console.log('\x1b[31m%s\x1b[0m', text);
+}
 
 module.exports = function (app) {
-    app.get('/sessions', (req, res) => {
 
-        const sessionsRootPath = 'Sessions/'
-        traverseDir(sessionsRootPath)
+  app.post('/sessions', (req, res) => {
+    log(JSON.stringify(req.body.data))
+  })
 
-        for(const [key, value] of Object.entries(configFiles)) {
-            console.log(value)
+  app.get('/sessions', (req, res) => {
+    var sessions_json = {} // empty Object
+    var key = 'Sessions';
+    sessions_json[key] = [];
+    const sessionsRootPath = 'Sessions/'
+    log(sessionsRootPath)
+
+    const testFolder = 'Sessions/';
+    const fs = require('fs');
+
+    fs.readdirSync(testFolder).forEach(file => {
+      if (file.startsWith('Session')) {
+        let config
+        try {
+          let path = `Sessions/${file}/publicTX.conf`
+
+          if (fs.existsSync(path)) {
+            config = iniParser(path)
+            config['Type'] = 'TX'
+
+            var sessions_json_tx = {}
+            sessions_json_tx[file] = config
+            sessions_json[key].push(sessions_json_tx)
+
+          } else {
+            path = `Sessions/${file}/publicRX.conf`
+            config = iniParser(path)
+            config['Type'] = 'RX'
+            var sessions_json_rx = {}
+            sessions_json_rx[file] = config
+            sessions_json[key].push(sessions_json_rx)
+          }
+          config['Name'] = file
+        } catch (err) {
+          console.error(err)
         }
 
-    
-        let config = iniParser('Sessions/Session1/publicTX.conf')
+        log(JSON.stringify(sessions_json));
+        let data = JSON.stringify(sessions_json, null, 2);
 
-        const session = JSON.stringify({
-            "sessions": [
-                config
-            ]
-        })
-
-        // const session = JSON.stringify({
-        //     "sessions": [
-        //         {
-        //             "name": "TX1",
-        //             "bandwidth": "5.0"
-        //         }
-        //     ]
-        // })
-        res.end(session)
-    })
+        fs.writeFile('student-3.json', data, (err) => {
+          if (err) throw err;
+          console.log('Data written to file');
+        });
+      }
+    });
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify(sessions_json))
+    // res.end(JSON.stringify(sessions_json, null, 2))
+  })
 }
