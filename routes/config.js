@@ -1,17 +1,27 @@
 const iniParser = require('../utils/ini-reader')
 const fs = require('fs')
 const path = require('path');
-const { Console } = require('console');
 
 
 function log(text) {
   console.log('\x1b[31m%s\x1b[0m', text);
 }
 
+function deleteSession(sessionName) {
+  const sessionFolder = 'Sessions/' + sessionName;
+  if (fs.existsSync(sessionFolder)) {
+    fs.rmdirSync(sessionFolder, { recursive: true });
+  }
+}
+
 module.exports = function (app) {
 
   app.post('/sessions', (req, res) => {
-    log(JSON.stringify(req.body.data))
+    JSON.parse(req.body.data).forEach(change => {
+      if (change.modification === 'deleted') {
+        deleteSession(change.session)
+      }
+    });
   })
 
   app.get('/sessions', (req, res) => {
@@ -62,6 +72,5 @@ module.exports = function (app) {
     });
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(sessions_json))
-    // res.end(JSON.stringify(sessions_json, null, 2))
   })
 }
