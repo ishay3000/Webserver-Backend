@@ -11,8 +11,9 @@
         "Type": "TX",
         "Name": "Session1"
       }
-    },
-    {
+    }
+  ]
+}{
       "Session2": {
         "Bandwidth": {
           "Rate": "5.0"
@@ -22,6 +23,44 @@
         },
         "Type": "RX",
         "Name": "Session2"
+      }
+    },
+    {
+      "Session4": {
+        "SyncDirectory": {
+          "Path": "/home/dor/test/ds"
+        },
+        "Bandwidth": {
+          "Rate": "5.0t5"
+        },
+        "Type": "RX",
+        "Name": "Session4"
+      }
+    },
+    {
+      "cfgfcgcfg": {
+        "SyncDirectory": {
+          "Path": "fcghcfhgch"
+        },
+        "Bandwidth": {
+          "Rate": "chchcfghfc"
+        },
+        "errors": {},
+        "Type": "TX",
+        "Name": "cfgfcgcfg"
+      }
+    },
+    {
+      "dordor6": {
+        "SyncDirectory": {
+          "Path": "LIOR"
+        },
+        "Bandwidth": {
+          "Rate": "dssds"
+        },
+        "errors": {},
+        "Type": "TX",
+        "Name": "dordor6"
       }
     }
   ]
