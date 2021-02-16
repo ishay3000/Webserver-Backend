@@ -11,9 +11,8 @@
         "Type": "TX",
         "Name": "Session1"
       }
-    }
-  ]
-}{
+    },
+    {
       "Session2": {
         "Bandwidth": {
           "Rate": "5.0"
